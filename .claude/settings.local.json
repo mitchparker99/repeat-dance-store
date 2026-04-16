@@ -9,7 +9,15 @@
       "Bash(lsof -ti:3000)",
       "Bash(ps -p 54228 -o command=)",
       "Bash(gh --version)",
-      "Bash(gh auth:*)"
+      "Bash(gh auth:*)",
+      "Bash(vercel --version)",
+      "Bash(/usr/local/bin/npm install:*)",
+      "Read(//usr/local/bin/**)",
+      "Read(//opt/homebrew/**)",
+      "Bash(/usr/local/bin/node --version)",
+      "Bash(/opt/homebrew/bin/node --version)",
+      "Bash(/usr/local/bin/node /usr/local/bin/npm install -g vercel)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" https://repeat-dance-store.vercel.app/)"
     ]
   }
 }
