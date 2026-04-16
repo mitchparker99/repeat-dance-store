@@ -1,6 +1,6 @@
 import type { ShippingZone, ShippingQuote } from '@/types'
 
-// ─── Japan Post EMS Zone Mapping ──────────────────────────────────────────────
+// ─── Japan Post EMS Shipping Calculator (worldwide, 4 zones) ─────────────────
 // Based on Japan Post official EMS zone classifications
 // Rates verified from Japan Post published schedule
 
