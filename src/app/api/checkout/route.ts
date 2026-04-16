@@ -33,15 +33,21 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const subtotal = items.reduce((sum, i) => sum + i.price, 0)
-    const total = subtotal + quote.cost
+    // Parse all prices to integers (JPY is zero-decimal — no fractional yen)
+    const parsedItems = items.map((item) => ({
+      ...item,
+      price: Math.round(Number(item.price)),
+    }))
+    const subtotal = parsedItems.reduce((sum, i) => sum + i.price, 0)
+    const shippingInt = Math.round(quote.cost)
+    const total = subtotal + shippingInt
 
     // Create order in database (status: pending_payment)
     const order = await createOrder({
       customer_email: '', // Will be captured by Stripe
       customer_name: shippingAddress.name,
       shipping_address: shippingAddress,
-      items: items.map((item) => ({
+      items: parsedItems.map((item) => ({
         listingId: item.listingId,
         releaseId: item.releaseId,
         title: item.title,
@@ -53,16 +59,16 @@ export async function POST(request: NextRequest) {
         format: item.format,
       })),
       subtotal,
-      shipping_cost: quote.cost,
+      shipping_cost: shippingInt,
       total,
       status: 'pending_payment',
     })
 
-    // Create Stripe checkout session
+    // Create Stripe checkout session (use rounded integer items + shipping)
     const checkoutUrl = await createCheckoutSession({
-      items,
+      items: parsedItems,
       shippingAddress,
-      shippingCost: quote.cost,
+      shippingCost: shippingInt,
       orderId: order.id,
     })
 
