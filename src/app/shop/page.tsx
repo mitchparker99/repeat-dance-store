@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from 'next/link' // shop page
 import { RecordCard } from '@/components/RecordCard'
 import { SortSelect } from '@/components/SortSelect'
 import { getInventory, getListingImageUrl, cleanArtistName } from '@/lib/discogs'
