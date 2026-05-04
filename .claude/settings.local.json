@@ -17,7 +17,30 @@
       "Bash(/usr/local/bin/node --version)",
       "Bash(/opt/homebrew/bin/node --version)",
       "Bash(/usr/local/bin/node /usr/local/bin/npm install -g vercel)",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\" https://repeat-dance-store.vercel.app/)"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" https://repeat-dance-store.vercel.app/)",
+      "mcp__f8bc2189-6de6-4f5d-bf60-29064627dee9__list_projects",
+      "mcp__c3615749-10c4-4a49-a063-bee273f95bd0__get_stripe_account_info",
+      "mcp__f8bc2189-6de6-4f5d-bf60-29064627dee9__list_teams",
+      "mcp__c3615749-10c4-4a49-a063-bee273f95bd0__fetch_stripe_resources",
+      "mcp__c3615749-10c4-4a49-a063-bee273f95bd0__stripe_api_search",
+      "mcp__f8bc2189-6de6-4f5d-bf60-29064627dee9__get_project",
+      "mcp__c3615749-10c4-4a49-a063-bee273f95bd0__stripe_api_execute",
+      "mcp__c3615749-10c4-4a49-a063-bee273f95bd0__stripe_api_details",
+      "mcp__c3615749-10c4-4a49-a063-bee273f95bd0__stripe_integration_recommender",
+      "mcp__c3615749-10c4-4a49-a063-bee273f95bd0__search_stripe_documentation",
+      "Bash(curl -s https://api.stripe.com/v1/webhook_endpoints -u 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: -d url=https://repeat-dance-store.vercel.app/api/webhooks/stripe -d 'enabled_events[]=checkout.session.completed' -d 'enabled_events[]=checkout.session.expired' -d 'enabled_events[]=payment_intent.payment_failed' -d 'description=Repeat Dance Record Store')",
+      "Read(//Users/mitchellparker/.config/vercel/**)",
+      "Read(//Users/mitchellparker/.vercel/**)",
+      "Bash(/usr/local/bin/node /usr/local/bin/vercel --version)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(k\\) for k in d.keys\\(\\)]\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(w['id'], w['url'], w['status']\\) for w in d['data']]\")",
+      "Bash(curl -s 'https://api.stripe.com/v1/webhook_endpoints?limit=10' -u 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:)",
+      "Bash(python3 -m json.tool)",
+      "Bash(curl -s -X DELETE https://api.stripe.com/v1/webhook_endpoints/we_1TMepAP7iDLVNjHp5TLNinKj -u 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:)",
+      "Bash(env)",
+      "mcp__f8bc2189-6de6-4f5d-bf60-29064627dee9__list_deployments",
+      "mcp__f8bc2189-6de6-4f5d-bf60-29064627dee9__get_deployment",
+      "Bash(curl -s -X POST https://api.stripe.com/v1/webhook_endpoints -u sk_test_51POAIrP7iDLVNjHphAJQX9P4CY75Ug8gHUkCe9jvOyPdzaQuyArpTAIUo3XA6Brx2KWaslGVcK2gcn9tveU2NpLE00zY0Mbq0l: -d url=https://repeat-dance-store.vercel.app/api/webhooks/stripe -d 'enabled_events[]=checkout.session.completed' -d 'enabled_events[]=checkout.session.expired' -d 'enabled_events[]=payment_intent.payment_failed' -d 'description=Repeat Dance - Test Mode')"
     ]
   }
 }

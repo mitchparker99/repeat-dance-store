@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getListing, getRelease, cleanArtistName } from '@/lib/discogs'
 import { formatPrice } from '@/lib/stripe'
+import { slugify } from '@/lib/utils'
+import { BandcampPlayer } from '@/components/BandcampPlayer'
 import { AddToCartButton } from './AddToCartButton'
 
 interface RecordPageProps {
@@ -101,7 +103,7 @@ export default async function RecordPage({ params }: RecordPageProps) {
       <div className="grid md:grid-cols-2 gap-8 lg:gap-16">
         {/* ── Left: Image ──────────────────────────────────────────────── */}
         <div>
-          <div className="aspect-square relative border border-black bg-gray-100">
+          <div className="aspect-square relative overflow-hidden bg-gray-100">
             {primaryImage ? (
               <Image
                 src={primaryImage.uri}
@@ -126,7 +128,7 @@ export default async function RecordPage({ params }: RecordPageProps) {
           {images.length > 1 && (
             <div className="grid grid-cols-4 gap-2 mt-2">
               {images.slice(1, 5).map((img, i) => (
-                <div key={i} className="aspect-square relative border border-black bg-gray-100">
+                <div key={i} className="aspect-square relative overflow-hidden bg-gray-100">
                   <Image src={img.uri} alt={`${title} image ${i + 2}`} fill className="object-cover" sizes="80px" />
                 </div>
               ))}
@@ -139,22 +141,38 @@ export default async function RecordPage({ params }: RecordPageProps) {
           {/* Title */}
           <div className="border-b border-black pb-6 mb-6">
             <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-1">
-              {artist}
+              <Link href={`/artists/${slugify(artist)}`} className="hover:underline">
+                {artist}
+              </Link>
             </p>
             <h1 className="text-2xl sm:text-3xl font-black leading-tight mb-2">{title}</h1>
             <div className="flex flex-wrap gap-2 text-xs">
               {year && <span className="font-medium">{year}</span>}
               {primaryLabel && (
                 <span className="text-gray-500">
-                  {primaryLabel.name}
+                  <Link href={`/labels/${slugify(primaryLabel.name)}`} className="hover:underline">
+                    {primaryLabel.name}
+                  </Link>
                   {primaryLabel.catno && primaryLabel.catno !== 'none' ? ` · ${primaryLabel.catno}` : ''}
                 </span>
               )}
               {genres.map((g) => (
-                <span key={g} className="border border-black px-2 py-0.5">{g}</span>
+                <Link
+                  key={g}
+                  href={`/genres/${slugify(g)}`}
+                  className="bg-gray-100 hover:bg-black hover:text-white transition-colors px-2 py-0.5 text-xs"
+                >
+                  {g}
+                </Link>
               ))}
               {styles.slice(0, 3).map((s) => (
-                <span key={s} className="border border-gray-300 px-2 py-0.5 text-gray-600">{s}</span>
+                <Link
+                  key={s}
+                  href={`/genres/${slugify(s)}`}
+                  className="bg-gray-50 hover:bg-black hover:text-white transition-colors px-2 py-0.5 text-xs text-gray-600"
+                >
+                  {s}
+                </Link>
               ))}
             </div>
           </div>
@@ -181,7 +199,7 @@ export default async function RecordPage({ params }: RecordPageProps) {
             </div>
 
             {listing.comments && (
-              <div className="border border-gray-200 p-3 text-xs text-gray-600 leading-relaxed">
+              <div className="bg-gray-50 p-3 text-xs text-gray-600 leading-relaxed">
                 {listing.comments}
               </div>
             )}
@@ -204,7 +222,7 @@ export default async function RecordPage({ params }: RecordPageProps) {
           />
 
           {/* Shipping note */}
-          <div className="mt-4 p-4 border border-black bg-gray-50 text-xs text-gray-600">
+          <div className="mt-4 bg-gray-50 p-4 text-xs text-gray-600">
             <p className="font-bold uppercase tracking-widest mb-1">Shipping from Tokyo, Japan</p>
             <p>Sent via Japan Post EMS — tracked, insured, worldwide delivery.</p>
             <p className="mt-1">Shipping cost calculated at checkout based on your location.</p>
@@ -222,12 +240,12 @@ export default async function RecordPage({ params }: RecordPageProps) {
 
       {/* ── Tracklist ─────────────────────────────────────────────────────── */}
       {tracklist.length > 0 && (
-        <div className="mt-12 border-t border-black pt-8">
+        <div className="mt-12 pt-8">
           <h2 className="text-sm font-black uppercase tracking-widest mb-4">Tracklist</h2>
-          <div className="divide-y divide-gray-200">
+          <div className="divide-y divide-gray-100">
             {tracklist.map((track, i) => (
-              <div key={i} className="flex items-center gap-4 py-2 text-sm">
-                <span className="text-gray-400 w-8 text-right flex-shrink-0">
+              <div key={i} className="flex items-center gap-4 py-2 text-sm pl-6">
+                <span className="text-gray-400 w-8 text-right flex-shrink-0 text-xs">
                   {track.position}
                 </span>
                 <span className="flex-1">{track.title}</span>
@@ -239,6 +257,13 @@ export default async function RecordPage({ params }: RecordPageProps) {
           </div>
         </div>
       )}
+
+      {/* ── Bandcamp Player ───────────────────────────────────────────────── */}
+      <BandcampPlayer
+        catno={primaryLabel?.catno}
+        artist={artist}
+        title={title}
+      />
     </div>
   )
 }

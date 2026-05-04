@@ -51,7 +51,7 @@ export default async function HomePage() {
           </div>
 
           {listings.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-px bg-black">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
               {listings.map((listing) => {
                 const artist = cleanArtistName(listing.release.artist || listing.release.description || 'Unknown')
                 const imageUrl = getListingImageUrl(listing)
@@ -59,20 +59,19 @@ export default async function HomePage() {
                 const title = parts.length > 1 ? parts.slice(1).join(' – ') : listing.release.title || listing.release.description || 'Unknown Title'
 
                 return (
-                  <div key={listing.id} className="bg-white">
-                    <RecordCard
-                      listingId={listing.id.toString()}
-                      releaseId={listing.release.id.toString()}
-                      title={title}
-                      artist={artist}
-                      price={listing.price.value}
-                      condition={listing.condition}
-                      sleeveCondition={listing.sleeve_condition}
-                      imageUrl={imageUrl}
-                      format={listing.release.format || 'LP'}
-                      year={listing.release.year}
-                    />
-                  </div>
+                  <RecordCard
+                    key={listing.id}
+                    listingId={listing.id.toString()}
+                    releaseId={listing.release.id.toString()}
+                    title={title}
+                    artist={artist}
+                    price={listing.price.value}
+                    condition={listing.condition}
+                    sleeveCondition={listing.sleeve_condition}
+                    imageUrl={imageUrl}
+                    format={listing.release.format || 'LP'}
+                    year={listing.release.year}
+                  />
                 )
               })}
             </div>

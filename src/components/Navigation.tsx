@@ -30,6 +30,9 @@ export function Navigation() {
           >
             New Arrivals
           </Link>
+          <Link href="/contact" className="text-xs font-bold uppercase tracking-widest hover:opacity-50 transition-opacity">
+            About
+          </Link>
         </div>
 
         {/* Cart button */}

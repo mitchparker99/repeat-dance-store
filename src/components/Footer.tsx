@@ -47,6 +47,11 @@ export function Footer() {
                   Contact
                 </Link>
               </li>
+              <li>
+                <Link href="/contact" className="text-xs hover:underline">
+                  About
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

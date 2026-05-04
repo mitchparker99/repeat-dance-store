@@ -118,3 +118,94 @@ export function getListingImageUrl(listing: DiscogsListing): string {
 export function cleanArtistName(name: string): string {
   return name.replace(/\s*\(\d+\)$/, '')
 }
+
+// Fetch all inventory across pages (for filtering)
+export async function getAllInventory(maxItems = 200): Promise<DiscogsListing[]> {
+  const username = getUsername()
+  const perPage = 100
+  const allListings: DiscogsListing[] = []
+  let page = 1
+
+  while (allListings.length < maxItems) {
+    const data = await discogsRequest<DiscogsInventoryResponse>(
+      `/users/${username}/inventory`,
+      {
+        page: page.toString(),
+        per_page: perPage.toString(),
+        sort: 'listed',
+        sort_order: 'desc',
+        status: 'For Sale',
+      },
+      180
+    )
+    allListings.push(...(data.listings || []))
+    if (!data.pagination || page >= data.pagination.pages) break
+    page++
+  }
+
+  return allListings.slice(0, maxItems)
+}
+
+// Search Discogs for an artist by name and return their profile
+export async function getDiscogsArtistByName(name: string): Promise<{
+  id: number
+  name: string
+  profile: string
+  images?: Array<{ uri: string; type: string; uri150: string }>
+  urls?: string[]
+} | null> {
+  try {
+    const searchRes = await discogsRequest<{
+      results: Array<{ id: number; title: string; type: string }>
+    }>('/database/search', { q: name, type: 'artist', per_page: '5' }, 86400)
+
+    if (!searchRes.results?.length) return null
+
+    const match =
+      searchRes.results.find(
+        (r) => r.title.toLowerCase() === name.toLowerCase()
+      ) || searchRes.results[0]
+
+    return discogsRequest<{
+      id: number
+      name: string
+      profile: string
+      images?: Array<{ uri: string; type: string; uri150: string }>
+      urls?: string[]
+    }>(`/artists/${match.id}`, {}, 86400)
+  } catch {
+    return null
+  }
+}
+
+// Search Discogs for a label by name and return its profile
+export async function getDiscogsLabelByName(name: string): Promise<{
+  id: number
+  name: string
+  profile: string
+  images?: Array<{ uri: string; type: string; uri150: string }>
+  urls?: string[]
+} | null> {
+  try {
+    const searchRes = await discogsRequest<{
+      results: Array<{ id: number; title: string; type: string }>
+    }>('/database/search', { q: name, type: 'label', per_page: '5' }, 86400)
+
+    if (!searchRes.results?.length) return null
+
+    const match =
+      searchRes.results.find(
+        (r) => r.title.toLowerCase() === name.toLowerCase()
+      ) || searchRes.results[0]
+
+    return discogsRequest<{
+      id: number
+      name: string
+      profile: string
+      images?: Array<{ uri: string; type: string; uri150: string }>
+      urls?: string[]
+    }>(`/labels/${match.id}`, {}, 86400)
+  } catch {
+    return null
+  }
+}

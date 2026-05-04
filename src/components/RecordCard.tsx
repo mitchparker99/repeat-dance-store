@@ -68,15 +68,15 @@ export function RecordCard({
   const shortCondition = SHORT_CONDITION[condition] || condition
 
   return (
-    <div className="group border border-black hover:bg-black hover:text-white transition-colors duration-150">
+    <div className="group cursor-pointer">
       {/* Album art */}
-      <Link href={`/shop/${listingId}`} className="block aspect-square overflow-hidden relative bg-gray-100">
+      <Link href={`/shop/${listingId}`} className="block aspect-square overflow-hidden relative bg-gray-100 group-hover:opacity-90 transition-opacity">
         {imageUrl && imageUrl !== '/placeholder-record.svg' ? (
           <Image
             src={imageUrl}
             alt={`${artist} – ${title}`}
             fill
-            className="object-cover group-hover:opacity-90 transition-opacity"
+            className="object-cover"
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
         ) : (
@@ -85,12 +85,12 @@ export function RecordCard({
       </Link>
 
       {/* Info */}
-      <div className="p-3">
+      <div className="pt-3 pb-4">
         <Link href={`/shop/${listingId}`} className="block">
           <p className="text-xs font-bold uppercase tracking-wide truncate mb-0.5">
             {artist}
           </p>
-          <p className="text-xs truncate text-gray-600 group-hover:text-gray-300 mb-2">
+          <p className="text-xs truncate text-gray-600 mb-2">
             {title}
             {year ? ` (${year})` : ''}
           </p>
@@ -110,7 +110,7 @@ export function RecordCard({
             className={`text-xs font-bold uppercase tracking-widest px-2 py-1.5 border transition-all duration-150 ${
               inCart
                 ? 'border-current opacity-50 cursor-default'
-                : 'border-current hover:bg-white hover:text-black group-hover:hover:bg-black group-hover:hover:text-white'
+                : 'border-black hover:bg-black hover:text-white'
             }`}
           >
             {inCart ? 'In Cart' : '+ Add'}
@@ -118,7 +118,7 @@ export function RecordCard({
         </div>
 
         {label && (
-          <p className="text-xs text-gray-400 group-hover:text-gray-500 mt-1 truncate">
+          <p className="text-xs text-gray-400 mt-1 truncate">
             {label}{catno ? ` · ${catno}` : ''}
           </p>
         )}
